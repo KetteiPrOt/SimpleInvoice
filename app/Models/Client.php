@@ -10,6 +10,8 @@ class Client extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'identification', 'user_id'];
+
     /**
      * Relations
      */
