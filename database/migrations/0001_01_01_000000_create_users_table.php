@@ -18,6 +18,13 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            // Extra attributes
+            $table->string('identification', 13)->nullable();
+            $table->string('commercial_name', 255)->nullable();
+            $table->string('address', 255)->nullable();
+            $table->binary('certificate')->nullable();
+            $table->string('certificate_password', 255)->nullable();
+
             $table->timestamps();
         });
 
