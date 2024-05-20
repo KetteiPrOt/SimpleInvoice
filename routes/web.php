@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
@@ -34,4 +35,10 @@ Route::middleware(['auth'])->controller(ClientController::class)->group(function
     Route::get('/clientes/{client}/editar', 'edit')->name('clients.edit');
     Route::put('/clientes/{client}', 'update')->name('clients.update');
     Route::delete('/clientes/{client}', 'destroy')->name('clients.destroy');
+});
+
+Route::middleware(['auth'])->controller(UserController::class)->group(function(){
+    Route::get('/usuarios/informacion-de-facturacion', 'showInvoicingData')->name('users.show-invoicing-data');
+    Route::get('/usuarios/informacion-de-facturacion/editar', 'editInvoicingData')->name('users.edit-invoicing-data');
+    Route::put('/usuarios/informacion-de-facturacion', 'updateInvoicingData')->name('users.update-invoicing-data');
 });
