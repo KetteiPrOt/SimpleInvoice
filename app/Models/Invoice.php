@@ -10,6 +10,14 @@ class Invoice extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'authorized',
+        'status_details',
+        'access_key',
+        'content',
+        'user_id',
+    ];
+
     /**
      * Relations
      */

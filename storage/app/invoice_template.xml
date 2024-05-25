@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<factura id="comprobante" version="1.0.0">
+    <infoTributaria>
+        <ambiente>1</ambiente>
+        <tipoEmision>1</tipoEmision>
+        <razonSocial>{{user_name}}</razonSocial>
+        <nombreComercial>{{user_commercial_name}}</nombreComercial>
+        <ruc>{{user_identification}}</ruc>
+        <claveAcceso>{{access_key}}</claveAcceso>
+        <codDoc>01</codDoc>
+        <estab>001</estab>
+        <ptoEmi>001</ptoEmi>
+        <secuencial>{{sequential}}</secuencial>
+        <dirMatriz>{{user_address}}</dirMatriz>
+    </infoTributaria>
+    <infoFactura>
+        <fechaEmision>{{date}}</fechaEmision>
+        <dirEstablecimiento>{{user_address}}</dirEstablecimiento>
+        <obligadoContabilidad>SI</obligadoContabilidad>
+        <tipoIdentificacionComprador>04</tipoIdentificacionComprador>
+        <razonSocialComprador>{{client_name}}</razonSocialComprador>
+        <identificacionComprador>{{client_identification}}</identificacionComprador>
+        <totalSinImpuestos>{{total_without_taxation}}</totalSinImpuestos>
+        <totalDescuento>0.00</totalDescuento>
+        <totalConImpuestos>
+            <totalImpuesto>
+                <codigo>2</codigo>
+                <codigoPorcentaje>4</codigoPorcentaje>
+                <baseImponible>{{total_without_taxation}}</baseImponible>
+                <tarifa>15.00</tarifa>
+                <valor>{{tax_value}}</valor>
+            </totalImpuesto>
+        </totalConImpuestos>
+        <propina>0.00</propina>
+        <importeTotal>{{total}}</importeTotal>
+        <moneda>DOLAR</moneda>
+        <pagos>
+            <pago>
+                <formaPago>01</formaPago>
+                <total>{{total}}</total>
+            </pago>
+        </pagos>
+    </infoFactura>
+    <detalles>
+        {{details}}
+    </detalles>
+    <infoAdicional>
+        <campoAdicional nombre="Email">sri.gob.ec@example.com</campoAdicional>
+    </infoAdicional>
+</factura>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\Invoice\CreateController as CreateInvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -42,3 +43,6 @@ Route::middleware(['auth'])->controller(UserController::class)->group(function()
     Route::get('/usuarios/informacion-de-facturacion/editar', 'editInvoicingData')->name('users.edit-invoicing-data');
     Route::put('/usuarios/informacion-de-facturacion', 'updateInvoicingData')->name('users.update-invoicing-data');
 });
+
+Route::get('/facturas/crear', CreateInvoiceController::class)->name('invoices.create');
+Route::post('/facturas', [CreateInvoiceController::class, 'store'])->name('invoices.store');

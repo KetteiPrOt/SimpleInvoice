@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->boolean('authorized');
             $table->string('status_details', 255);
+            $table->string('access_key', 49);
             $table->text('content')->nullable();
             // Foreign Keys
             $table->unsignedBigInteger('user_id');

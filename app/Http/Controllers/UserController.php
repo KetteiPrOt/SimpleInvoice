@@ -26,13 +26,16 @@ class UserController extends Controller
     {
         //$user = Auth::user();
         $user = User::find(auth()->user()->id);
-        $user->update([
+        $data = [
             'identification' => $request->get('identification'),
             'commercial_name' => $request->get('commercial_name'),
             'address' => $request->get('address'),
-            'certificate' => $request->file('certificate')->get(),
             'certificate_password' => $request->get('certificate_password')
-        ]);
+        ];
+        if(!is_null($request->file('certificate'))){
+            $data['certificate'] = $request->file('certificate')->get();
+        }
+        $user->update($data);
         return redirect()->route('users.show-invoicing-data');
     }
 }

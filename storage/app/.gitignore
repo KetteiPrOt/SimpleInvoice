@@ -1,3 +1,4 @@
 *
 !public/
 !.gitignore
+!invoice_template.xml

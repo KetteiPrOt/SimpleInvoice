@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'sd.kettei@gmail.com',
         ]);
 
-        Product::factory(10)->create();
-        Client::factory(10)->create();
+        // Product::factory(10)->create();
+        // Client::factory(10)->create();
     }
 }
