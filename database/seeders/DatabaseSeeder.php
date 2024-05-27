@@ -18,11 +18,23 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Joel',
+            'name' => 'PATRICIA ELIZABETH TRAVEZ MERO',
             'email' => 'sd.kettei@gmail.com',
         ]);
 
         // Product::factory(10)->create();
         // Client::factory(10)->create();
+
+        Product::create([
+            'Jhonnie Rojo',
+            'price' => 10.00,
+            'user_id' => 1
+        ]);
+
+        Client::create([
+            'name' => 'PRUEBAS SERVICIO RENTAS INTERNAS',
+            'identification' => '0000000000001',
+            'user_id' => 1
+        ]);
     }
 }

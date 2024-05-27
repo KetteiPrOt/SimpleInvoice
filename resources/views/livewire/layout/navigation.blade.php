@@ -39,6 +39,9 @@ new class extends Component
                     <x-nav-link :href="route('clients.index')" :active="request()->routeIs('clients.*')" wire:navigate>
                         Clientes
                     </x-nav-link>
+                    <x-nav-link :href="route('invoices.index')" :active="request()->routeIs('invoices.*')" wire:navigate>
+                        Facturas
+                    </x-nav-link>
                     <x-nav-link :href="route('users.show-invoicing-data')" :active="request()->routeIs('users.*')" wire:navigate>
                         Datos de facturacion
                     </x-nav-link>
@@ -111,6 +114,9 @@ new class extends Component
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('clients.index')" wire:navigate>
                     Clientes
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('invoices.index')" wire:navigate>
+                    Facturas
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('users.show-invoicing-data')" wire:navigate>
                     Datos de facturacion

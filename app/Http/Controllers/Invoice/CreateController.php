@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\Product;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -32,11 +33,21 @@ class CreateController extends Controller
 
         $signed_invoice = $signer->sign();
 
-        $this->sendInvoice($signed_invoice);
+        try{
+            $response = $this->sendInvoice($signed_invoice);
+        }catch(Exception $e){
+            $response = null;
+        }
+
+        $status =
+            $response?->RespuestaRecepcionComprobante?->estado
+            == 'RECIBIDA'
+            ? 'Enviada'
+            : 'Envio Fallido';
 
         Invoice::create([
             'authorized' => false,
-            'status_details' => 'Enviada',
+            'status_details' => $status,
             'access_key' => $invoice['access_key'],
             'content' => $signed_invoice,
             'user_id' => Auth::user()->id,
@@ -49,17 +60,7 @@ class CreateController extends Controller
     {
         $client = new SoapClient('https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl');
         $response = $client->validarComprobante(['xml' => $invoice]);
-        // dd($response);
-    }
-
-    private function queryAuthorization(string $accessKey): void
-    {
-        $client = new SoapClient('https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl');
-        $response = $client->autorizacionComprobante([
-            'claveAccesoComprobante' => $accessKey
-        ]);
-
-        dd($response);
+        return $response;
     }
 
     private function buildInvoice(array $data): array
@@ -100,7 +101,9 @@ class CreateController extends Controller
 
     private function getSequential(): string
     {
-        $sequential = Invoice::orderBy('id', 'desc')->first()?->id ?? 201;
+        $sequential = Invoice::orderBy('id', 'desc')->first()?->id ?? 1;
+
+        $sequential = ($sequential == 1) ? 1 : ($sequential + 1);
 
         // Add left zeros
         for($i = 0; $i < 8; $i++){

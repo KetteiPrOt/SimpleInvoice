@@ -18,6 +18,19 @@ class Invoice extends Model
         'user_id',
     ];
 
+    public function appendSequential(): void
+    {
+        $sequential = $this->id;
+        // Add left zeros
+        for($i = 0; $i < 8; $i++){
+            if($sequential < (10 ** ($i + 1))){
+                $sequential = str_repeat('0', 8 - $i) . $sequential;
+                break;
+            }
+        }
+        $this->sequential = '001-001-' . $sequential;
+    }
+
     /**
      * Relations
      */
