@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         // Client::factory(10)->create();
 
         Product::create([
-            'Jhonnie Rojo',
+            'name' => 'Jhonnie Rojo',
             'price' => 10.00,
             'user_id' => 1
         ]);

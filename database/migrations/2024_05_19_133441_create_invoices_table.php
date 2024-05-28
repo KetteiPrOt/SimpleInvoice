@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->boolean('authorized');
+            $table->boolean('sent')->default(false);
+            $table->boolean('authorized')->default(false);
             $table->string('status_details', 255);
             $table->string('access_key', 49);
             $table->text('content')->nullable();
