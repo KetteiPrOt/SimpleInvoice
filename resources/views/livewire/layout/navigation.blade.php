@@ -30,9 +30,6 @@ new class extends Component
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
                     <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')" wire:navigate>
                         Productos
                     </x-nav-link>
@@ -42,8 +39,8 @@ new class extends Component
                     <x-nav-link :href="route('invoices.index')" :active="request()->routeIs('invoices.*')" wire:navigate>
                         Facturas
                     </x-nav-link>
-                    <x-nav-link :href="route('users.show-invoicing-data')" :active="request()->routeIs('users.*')" wire:navigate>
-                        Datos de facturacion
+                    <x-nav-link :href="route('users.show-invoicing-data')" :active="request()->routeIs('users.show-invoicing-data')" wire:navigate>
+                        Información tributaria
                     </x-nav-link>
                 </div>
             </div>
@@ -93,8 +90,17 @@ new class extends Component
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')" wire:navigate>
+                Productos
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('clients.index')" :active="request()->routeIs('clients.*')" wire:navigate>
+                Clientes
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('invoices.index')" :active="request()->routeIs('invoices.*')" wire:navigate>
+                Facturas
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('users.show-invoicing-data')" :active="request()->routeIs('users.show-invoicing-data')" wire:navigate>
+                Información tributaria
             </x-responsive-nav-link>
         </div>
 
@@ -108,18 +114,6 @@ new class extends Component
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile')" wire:navigate>
                     {{ __('Profile') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('products.index')" wire:navigate>
-                    Productos
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('clients.index')" wire:navigate>
-                    Clientes
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('invoices.index')" wire:navigate>
-                    Facturas
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('users.show-invoicing-data')" wire:navigate>
-                    Datos de facturacion
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->

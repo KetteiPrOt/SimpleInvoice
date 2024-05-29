@@ -10,23 +10,55 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     
-                    <a
+                    <x-secondary-link-button
+                        class="mb-4"
                         href="{{route('products.create')}}"
-                        class="inline-block text-blue-400 underline mb-6"
                     >
                         Crear nuevo producto
-                    </a>
+                    </x-secondary-link-button>
 
-                    <ol class="list-decimal ml-6">
-                        @foreach($products as $product)
-                            <li>
-                                <a href="{{route('products.show', $product->id)}}">
-                                    {{$product->name}}
-                                </a>
-                            </li>
-                        @endforeach
-                    </ol>
+                    <form action="{{request()->url()}}">
+                        <x-text-input
+                            name="search"
+                            value="{{request()->query()['search'] ?? null}}"
+                        />
+                        <x-primary-button>
+                            Buscar
+                        </x-primary-button>
+                        <x-input-error
+                            :messages="$errors->get('search')"
+                        />
+                    </form>
 
+                    <x-table>
+                        <x-slot:head>
+                            <tr>
+                                <x-table.th>
+                                    Nombre
+                                </x-table.th>
+                            </tr>
+                        </x-slot:head>
+                        <x-slot:body>
+                            @forelse($products as $product)
+                                <x-table.tr>
+                                    <x-table.td>
+                                        <a href="{{route('products.show', $product->id)}}">
+                                            {{$product->name}}
+                                        </a>
+                                    </x-table.td>
+                                </x-table.tr>
+                            @empty
+                                <x-table.tr>
+                                    <x-table.td>
+                                        <span class="text-red-500">
+                                            No se encontraron productos...
+                                        </span>
+                                    </x-table.td>
+                                </x-table.tr>
+                            @endforelse
+                        </x-slot:body>
+                    </x-table>
+                    {{$products->links()}}
                 </div>
             </div>
         </div>
