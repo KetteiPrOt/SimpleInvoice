@@ -18,7 +18,7 @@
                                 Nombre
                             </x-input-label>
                             <x-text-input
-                                {{-- minlength="2" maxlength="255" --}}
+                                minlength="2" maxlength="255"
                                 name="name" id="nameInput" required
                                 value="{{old('name')}}"
                             />
@@ -31,7 +31,7 @@
                                 RUC
                             </x-input-label>
                             <x-text-input
-                                {{-- minlength="13" maxlength="13" --}}
+                                minlength="13" maxlength="13"
                                 name="identification" id="identificationInput" required
                                 value="{{old('identification')}}"
                             />

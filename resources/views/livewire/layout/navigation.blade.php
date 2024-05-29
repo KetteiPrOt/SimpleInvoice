@@ -30,6 +30,11 @@ new class extends Component
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    @can('users')
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')" wire:navigate>
+                            Usuarios
+                        </x-nav-link>
+                    @endcan
                     <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')" wire:navigate>
                         Productos
                     </x-nav-link>
@@ -39,7 +44,7 @@ new class extends Component
                     <x-nav-link :href="route('invoices.index')" :active="request()->routeIs('invoices.*')" wire:navigate>
                         Facturas
                     </x-nav-link>
-                    <x-nav-link :href="route('users.show-invoicing-data')" :active="request()->routeIs('users.show-invoicing-data')" wire:navigate>
+                    <x-nav-link :href="route('profile') . '/#update-invoicing-information'">
                         Información tributaria
                     </x-nav-link>
                 </div>
@@ -90,6 +95,11 @@ new class extends Component
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
+            @can('users')
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')" wire:navigate>
+                    Usuarios
+                </x-responsive-nav-link>
+            @endcan
             <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')" wire:navigate>
                 Productos
             </x-responsive-nav-link>
@@ -99,7 +109,7 @@ new class extends Component
             <x-responsive-nav-link :href="route('invoices.index')" :active="request()->routeIs('invoices.*')" wire:navigate>
                 Facturas
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('users.show-invoicing-data')" :active="request()->routeIs('users.show-invoicing-data')" wire:navigate>
+            <x-responsive-nav-link :href="route('profile') . '/#update-invoicing-information'">
                 Información tributaria
             </x-responsive-nav-link>
         </div>

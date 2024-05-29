@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Clientes
+            Usuarios
         </h2>
     </x-slot>
 
@@ -9,12 +9,12 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-
+                    
                     <x-secondary-link-button
                         class="mb-4"
-                        href="{{route('clients.create')}}"
+                        href="{{route('users.create')}}"
                     >
-                        Crear nuevo cliente
+                        Crear nuevo usuario
                     </x-secondary-link-button>
 
                     <form action="{{request()->url()}}">
@@ -35,16 +35,16 @@
                         <x-slot:head>
                             <tr>
                                 <x-table.th>
-                                    Razón Social
+                                    Nombre
                                 </x-table.th>
                             </tr>
                         </x-slot:head>
                         <x-slot:body>
-                            @forelse($clients as $client)
+                            @forelse($users as $user)
                                 <x-table.tr>
                                     <x-table.td>
-                                        <a href="{{route('clients.show', $client->id)}}">
-                                            {{$client->name}}
+                                        <a href="{{route('users.show', $user->id)}}">
+                                            {{$user->name}}
                                         </a>
                                     </x-table.td>
                                 </x-table.tr>
@@ -52,15 +52,14 @@
                                 <x-table.tr>
                                     <x-table.td>
                                         <span class="text-red-500">
-                                            No se encontraron clientes...
+                                            No se encontraron usuarios...
                                         </span>
                                     </x-table.td>
                                 </x-table.tr>
                             @endforelse
                         </x-slot:body>
                     </x-table>
-                    {{$clients->links()}}
-
+                    {{$users->links()}}
                 </div>
             </div>
         </div>
