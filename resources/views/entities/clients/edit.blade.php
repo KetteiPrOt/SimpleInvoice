@@ -9,13 +9,6 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    
-                    <a
-                        href="{{route('clients.show', $client->id)}}"
-                        class="inline-block text-blue-400 underline mb-6"
-                    >
-                        Volver
-                    </a>
 
                     <form action="{{route('clients.update', $client->id)}}" method="post" class="space-y-4">
                         @method('put')
@@ -26,24 +19,37 @@
                                 Nombre
                             </x-input-label>
                             <x-text-input
+                                minlength="2" maxlength="255"
                                 name="name" id="nameInput" required
                                 value="{{old('name', $client->name)}}"
+                            />
+                            <x-input-error
+                                :messages="$errors->get('name')"
                             />
                         </div>
                         <div>
                             <x-input-label for="identificationInput">
-                                Cedula
+                                RUC
                             </x-input-label>
                             <x-text-input
                                 minlength="13" maxlength="13"
                                 name="identification" id="priceInput" required
                                 value="{{old('identification', $client->identification)}}"
                             />
+                            <x-input-error
+                                :messages="$errors->get('identification')"
+                            />
                         </div>
                         <div>
-                            <x-primary-button>
+                            <x-primary-button class="mr-1">
                                 Guardar
                             </x-primary-button>
+                            <x-secondary-link-button
+                                href="{{route('clients.show', $client->id)}}"
+                                class="ml-1"
+                            >
+                                Cancelar
+                            </x-secondary-link-button>
                         </div>
                     </form>
                 </div>

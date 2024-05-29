@@ -9,40 +9,39 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    
-                    <a
-                        href="{{route('clients.index')}}"
-                        class="inline-block text-blue-400 underline mb-6"
-                    >
-                        Volver
-                    </a>
 
-                    <ul class="list-disk ml-6 mb-6">
-                        <li>
-                            <strong>Nombre:</strong> <br>
-                            {{$client->name}}
-                        </li>
-                        <li>
-                            <strong>Cedula:</strong> <br>
-                            {{$client->identification}}
-                        </li>
-                        <li>
-                            <strong>Usuario:</strong> <br>
-                            {{$client->user->name}}
-                        </li>
-                    </ul>
+                    <h3 class="font-bold text-lg">
+                        Razón Social
+                    </h3>
+                    <p class="mb-4">
+                        {{$client->name}}
+                    </p>
 
-                    <a
+                    <h3 class="font-bold text-lg">
+                        RUC
+                    </h3>
+                    <p class="mb-4">
+                        {{$client->identification}}
+                    </p>
+
+                    <h3 class="font-bold text-lg">
+                        Usuario
+                    </h3>
+                    <p class="mb-4">
+                        {{$client->user->name}}
+                    </p>
+
+                    <x-secondary-link-button
                         href="{{route('clients.edit', $client->id)}}"
-                        class="inline-block text-blue-400 underline mb-6"
+                        class="mr-1"
                     >
                         Editar Cliente
-                    </a>
+                    </x-secondary-link-button>
 
-                    <form action="{{route('clients.destroy', $client->id)}}" method="post">
+                    <form action="{{route('clients.destroy', $client->id)}}" method="post" class="inline">
                         @method('delete')
                         @csrf
-                        <x-danger-button type="submit">
+                        <x-danger-button type="submit" class="ml-1">
                             Eliminar Cliente
                         </x-danger-button>
                     </form>

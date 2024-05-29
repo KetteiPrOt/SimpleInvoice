@@ -5,13 +5,33 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ClientController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'search' => 'nullable|string|min:2|max:255'
+        ], attributes: ['search' => 'buscar']);
+        if($validator->fails()){
+            return redirect()
+                ->route('clients.index')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $validated = $validator->validated();
+        $query = Client::where(
+            'user_id',
+            Auth::user()->id
+        );
+        if(array_key_exists('search', $validated)){
+            $search = '%' . $validated['search'] . '%';
+            $query->whereRaw("name LIKE ?", [$search]);
+        }
+        $clients = $query->orderBy('name')->paginate(15)->withQueryString();
         return view('entities.clients.index', [
-            'clients' => Client::all()
+            'clients' => $clients
         ]);
     }
 
@@ -22,9 +42,23 @@ class ClientController extends Controller
 
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|min:2|max:255',
+            'identification' => ['required', 'string', 'size:13', 'regex:/^[0987654321]{13}$/']
+        ], attributes: [
+            'name' => 'nombre',
+            'identification' => 'identificación'
+        ]);
+        if($validator->fails()){
+            return redirect()
+                ->route('clients.create')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $validated = $validator->validated();
         $client = Client::create([
-            'name' => $request->get('name'),
-            'identification' => $request->get('identification'),
+            'name' => $validated['name'],
+            'identification' => $validated['identification'],
             'user_id' => Auth::user()->id
         ]);
         return redirect()->route('clients.show', $client->id);
@@ -32,6 +66,7 @@ class ClientController extends Controller
 
     public function show(Client $client)
     {
+        $this->authorize($client);
         return view('entities.clients.show', [
             'client' => $client
         ]);
@@ -39,6 +74,7 @@ class ClientController extends Controller
 
     public function edit(Client $client)
     {
+        $this->authorize($client);
         return view('entities.clients.edit', [
             'client' => $client
         ]);
@@ -46,16 +82,39 @@ class ClientController extends Controller
 
     public function update(Request $request, Client $client)
     {
+        $this->authorize($client);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|min:2|max:255',
+            'identification' => ['required', 'string', 'size:13', 'regex:/^[0987654321]{13}$/']
+        ], attributes: [
+            'name' => 'nombre',
+            'identification' => 'identificación'
+        ]);
+        if($validator->fails()){
+            return redirect()
+                ->route('clients.edit', $client->id)
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $validated = $validator->validated();
         $client->update([
-            'name' => $request->get('name'),
-            'identification' => $request->get('identification')
+            'name' => $validated['name'],
+            'identification' => $validated['identification']
         ]);
         return redirect()->route('clients.show', $client->id);
     }
 
     public function destroy(Client $client)
     {
+        $this->authorize($client);
         $client->delete();
         return redirect()->route('clients.index');
+    }
+
+    private function authorize(Client $client): void
+    {
+        if($client->user_id !== Auth::user()->id){
+            abort(403);
+        }
     }
 }
