@@ -22,6 +22,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'sd.kettei@gmail.com',
         ]);
 
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@simple.invoice.test',
+        ]);
+
         // Product::factory(10)->create();
         // Client::factory(10)->create();
 

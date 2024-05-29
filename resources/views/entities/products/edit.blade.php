@@ -9,13 +9,6 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    
-                    <a
-                        href="{{route('products.show', $product->id)}}"
-                        class="inline-block text-blue-400 underline mb-6"
-                    >
-                        Volver
-                    </a>
 
                     <form action="{{route('products.update', $product->id)}}" method="post" class="space-y-4">
                         @method('put')
@@ -23,11 +16,15 @@
 
                         <div>
                             <x-input-label for="nameInput">
-                                Nombre
+                                Descripción
                             </x-input-label>
                             <x-text-input
+                                minlength="2" maxlength="255"
                                 name="name" id="nameInput" required
                                 value="{{old('name', $product->name)}}"
+                            />
+                            <x-input-error
+                                :messages="$errors->get('name')"
                             />
                         </div>
                         <div>
@@ -39,11 +36,20 @@
                                 name="price" id="priceInput" required
                                 value="{{old('price', $product->price)}}"
                             />
+                            <x-input-error
+                                :messages="$errors->get('price')"
+                            />
                         </div>
                         <div>
-                            <x-primary-button>
+                            <x-primary-button class="mr-1">
                                 Guardar
                             </x-primary-button>
+                            <x-secondary-link-button
+                                class="ml-1"
+                                href="{{route('products.show', $product->id)}}"
+                            >
+                                Cancelar
+                            </x-secondary-link-button>
                         </div>
                     </form>
                 </div>

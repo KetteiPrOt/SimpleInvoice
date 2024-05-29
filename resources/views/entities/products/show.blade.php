@@ -9,37 +9,36 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    
-                    <a
-                        href="{{route('products.index')}}"
-                        class="inline-block text-blue-400 underline mb-6"
-                    >
-                        Volver
-                    </a>
 
-                    <ul class="list-disk ml-6 mb-6">
-                        <li>
-                            <strong>Nombre:</strong> <br>
-                            {{$product->name}}
-                        </li>
-                        <li>
-                            <strong>Precio:</strong> <br>
-                            ${{$product->price}}
-                        </li>
-                        <li>
-                            <strong>Usuario:</strong> <br>
-                            {{$product->user->name}}
-                        </li>
-                    </ul>
+                    <h3 class="font-bold text-lg">
+                        Descripción
+                    </h3>
+                    <p class="mb-4">
+                        {{$product->name}}
+                    </p>
 
-                    <a
+                    <h3 class="font-bold text-lg">
+                        Precio
+                    </h3>
+                    <p class="mb-4">
+                        ${{$product->price}}
+                    </p>
+
+                    <h3 class="font-bold text-lg">
+                        Usuario
+                    </h3>
+                    <p class="mb-4">
+                        {{$product->user->name}}
+                    </p>
+
+                    <x-secondary-link-button
+                        class="mr-4"
                         href="{{route('products.edit', $product->id)}}"
-                        class="inline-block text-blue-400 underline mb-6"
                     >
                         Editar Producto
-                    </a>
+                    </x-secondary-link-button>
 
-                    <form action="{{route('products.destroy', $product->id)}}" method="post">
+                    <form action="{{route('products.destroy', $product->id)}}" method="post" class="inline">
                         @method('delete')
                         @csrf
                         <x-danger-button type="submit">

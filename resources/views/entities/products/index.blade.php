@@ -20,6 +20,7 @@
                     <form action="{{request()->url()}}">
                         <x-text-input
                             name="search"
+                            minlength="2" maxlength="255"
                             value="{{request()->query()['search'] ?? null}}"
                         />
                         <x-primary-button>
@@ -34,7 +35,7 @@
                         <x-slot:head>
                             <tr>
                                 <x-table.th>
-                                    Nombre
+                                    Descripción
                                 </x-table.th>
                             </tr>
                         </x-slot:head>

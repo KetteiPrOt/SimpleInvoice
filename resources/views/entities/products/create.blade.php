@@ -15,10 +15,15 @@
 
                         <div>
                             <x-input-label for="nameInput">
-                                Nombre
+                                Descripción
                             </x-input-label>
                             <x-text-input
+                                minlength="2" maxlength="255"
                                 name="name" id="nameInput" required
+                                value="{{old('name')}}"
+                            />
+                            <x-input-error
+                                :messages="$errors->get('name')"
                             />
                         </div>
                         <div>
@@ -28,6 +33,10 @@
                             <x-text-input
                                 type="number" min="0.01" max="999999.99" step="0.01"
                                 name="price" id="priceInput" required
+                                value="{{old('price')}}"
+                            />
+                            <x-input-error
+                                :messages="$errors->get('price')"
                             />
                         </div>
                         <div>
