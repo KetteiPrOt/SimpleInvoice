@@ -14,8 +14,22 @@ use SoapClient;
 
 class CreateController extends Controller
 {
+    private function invoicingInformationExist(): bool
+    {
+        $user = Auth::user();
+        return 
+            !is_null($user->identification)
+            && !is_null($user->commercial_name)
+            && !is_null($user->address)
+            && !is_null($user->certificate)
+            && !is_null($user->certificate_password);
+    }
+
     public function __invoke()
     {
+        if(!$this->invoicingInformationExist()){
+            return redirect(route('profile') . '#update-invoicing-information');
+        }
         return view('entities.invoices.create', [
             'clients' => Client::all()
         ]);
@@ -23,6 +37,10 @@ class CreateController extends Controller
 
     public function store(Request $request, Signer $signer)
     {
+        if(!$this->invoicingInformationExist()){
+            return redirect(route('profile') . '#update-invoicing-information');
+        }
+
         $invoice = $this->buildInvoice([
             'client' => Client::find($request->get('client')),
             'selected_products' => $request->get('selected_products'),

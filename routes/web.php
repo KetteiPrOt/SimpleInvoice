@@ -40,6 +40,10 @@ Route::middleware(['auth'])->controller(ClientController::class)->group(function
 });
 
 Route::middleware(['auth', 'can:users'])->controller(UserController::class)->group(function(){
+    Route::get('/usuarios/informacion-de-facturacion', 'showInvoicingData')->name('users.show-invoicing-data');
+    Route::get('/usuarios/informacion-de-facturacion/editar', 'editInvoicingData')->name('users.edit-invoicing-data');
+    Route::put('/usuarios/informacion-de-facturacion', 'updateInvoicingData')->name('users.update-invoicing-data');
+
     Route::get('/usuarios', 'index')->name('users.index');
     Route::get('/usuarios/crear', 'create')->name('users.create');
     Route::post('/usuarios', 'store')->name('users.store');
@@ -47,10 +51,6 @@ Route::middleware(['auth', 'can:users'])->controller(UserController::class)->gro
     Route::get('/usuarios/{user}/editar', 'edit')->name('users.edit');
     Route::put('/usuarios/{user}', 'update')->name('users.update');
     Route::delete('/usuarios/{user}', 'destroy')->name('users.destroy');
-
-    Route::get('/usuarios/informacion-de-facturacion', 'showInvoicingData')->name('users.show-invoicing-data');
-    Route::get('/usuarios/informacion-de-facturacion/editar', 'editInvoicingData')->name('users.edit-invoicing-data');
-    Route::put('/usuarios/informacion-de-facturacion', 'updateInvoicingData')->name('users.update-invoicing-data');
 });
 
 Route::get('/facturas', [InvoiceController::class, 'index'])->name('invoices.index');

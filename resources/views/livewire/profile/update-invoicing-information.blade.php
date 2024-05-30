@@ -4,39 +4,72 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules;
 use Livewire\Volt\Component;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 new class extends Component
 {
-    public string $name = '';
-    public string $email = '';
+    use WithFileUploads;
+
+    public string $identification = '';
+    public string $commercial_name = '';
+    public string $address = '';
+    public $certificate = '';
+    public string $certificate_password = '';
 
     /**
      * Mount the component.
      */
     public function mount(): void
     {
-        $this->name = Auth::user()->name;
-        $this->email = Auth::user()->email;
+        $user = Auth::user();
+        $this->identification = $user->identification ?? '';
+        $this->commercial_name = $user->commercial_name ?? '';
+        $this->address = $user->address ?? '';
+        $this->certificate = '';
+        $this->certificate_password = $user->certificate_password ?? '';
     }
 
     /**
-     * Update the profile information for the currently authenticated user.
+     * Update the invoicing information for the currently authenticated user.
      */
     public function updateInvoicingInformation(): void
     {
         $user = Auth::user();
+        $certificateRequeriment = is_null($user->certificate) ? 'required|' : '';
 
         $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
+            'identification' => ['required', 'string', 'size:13', 'regex:/^[0987654321]{13}$/'],
+            'commercial_name' => 'required|string|min:2|max:255',
+            'address' => 'required|string|min:2|max:255',
+            'certificate' => $certificateRequeriment . 'file|max:12288',
+            'certificate_password' => ['required', 'string', 'max:255', Rules\Password::defaults()]
         ]);
 
-        $user->fill($validated);
+        if(array_key_exists('certificate', $validated)){
+            $this->certificate->storeAs('/', "uploaded-certificate-$user->id.p12");
+            $certificate = Storage::get("uploaded-certificate-$user->id.p12");
+            $user->update([
+                'certificate' => $certificate
+            ]);
+            Storage::delete("uploaded-certificate-$user->id.p12");
+        }
 
-        $user->save();
+        if(array_key_exists('certificate_password', $validated)){
+            $user->update([
+                'certificate_password' => $validated['certificate_password']
+            ]);
+        }
 
-        $this->dispatch('profile-updated', name: $user->name);
+        $user->update([
+            'identification' => $validated['identification'],
+            'commercial_name' => $validated['commercial_name'],
+            'address' => $validated['address'],
+        ]);
+
+        $this->dispatch('invoicing-information-updated');
     }
 }; ?>
 
@@ -55,15 +88,67 @@ new class extends Component
 
     <form wire:submit="updateInvoicingInformation" class="mt-6 space-y-6">
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input wire:model="name" id="name" name="name" type="text" class="mt-1 block w-full" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            <x-input-label for="identificationInput" :value="'RUC'" />
+            <x-text-input
+                wire:model="identification"
+                minlength="13" maxlength="13" required
+                id="identificationInput" name="identification" type="text"
+                class="mt-1 block w-full"
+            />
+            <x-input-error class="mt-2" :messages="$errors->get('identification')" />
         </div>
 
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="email" id="email" name="email" type="email" class="mt-1 block w-full" required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+            <x-input-label for="commercialNameInput" :value="'Nombre Comercial'" />
+            <x-text-input
+                wire:model="commercial_name"
+                minlength="2" maxlength="255" required
+                id="commercialNameInput" name="commercial_name" type="text"
+                class="mt-1 block w-full"
+            />
+            <x-input-error class="mt-2" :messages="$errors->get('commercial_name')" />
+        </div>
+
+        <div>
+            <x-input-label for="addressInput" :value="'Dirección'" />
+            <x-text-input
+                wire:model="address"
+                minlength="2" maxlength="255" required
+                id="addressInput" name="address" type="text"
+                class="mt-1 block w-full"
+            />
+            <x-input-error class="mt-2" :messages="$errors->get('address')" />
+        </div>
+
+        <div>
+            <x-input-label for="certificateInput" :value="'Certificado de firma digital'" />
+            <x-text-input
+                :required="is_null(auth()->user()->certificate)"
+                wire:model="certificate"
+                id="certificateInput" name="certificate" type="file"
+                class="mt-1 block w-full"
+            />
+            <x-input-error class="mt-2" :messages="$errors->get('certificate')" />
+            @if(is_null(auth()->user()->certificate))
+                <p class="text-red-500">
+                    Sin certificado guardado.
+                </p>
+            @else
+                <p class="text-green-500">
+                    Certificado guardado
+                </p>
+            @endif
+        </div>
+
+        <div>
+            <x-input-label for="certificatePasswordInput" :value="'Contraseña del certificado'" />
+            <x-text-input
+                wire:model="certificate_password"
+                id="certificatePasswordInput" name="certificate_password" type="password"
+                minlength="8" maxlength="255" required
+                class="mt-1 block w-full"
+            />
+            <x-input-error class="mt-2" :messages="$errors->get('certificate_password')" />
         </div>
 
         <div class="flex items-center gap-4">
