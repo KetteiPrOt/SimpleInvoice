@@ -12,7 +12,7 @@ class Controller extends BaseController
 {
     public function index()
     {
-        $invoices = Invoice::all();
+        $invoices = Invoice::orderBy('created_at')->paginate(15);
         foreach($invoices as $invoice){
             $invoice->appendSequential();
         }

@@ -40,10 +40,6 @@ Route::middleware(['auth'])->controller(ClientController::class)->group(function
 });
 
 Route::middleware(['auth', 'can:users'])->controller(UserController::class)->group(function(){
-    Route::get('/usuarios/informacion-de-facturacion', 'showInvoicingData')->name('users.show-invoicing-data');
-    Route::get('/usuarios/informacion-de-facturacion/editar', 'editInvoicingData')->name('users.edit-invoicing-data');
-    Route::put('/usuarios/informacion-de-facturacion', 'updateInvoicingData')->name('users.update-invoicing-data');
-
     Route::get('/usuarios', 'index')->name('users.index');
     Route::get('/usuarios/crear', 'create')->name('users.create');
     Route::post('/usuarios', 'store')->name('users.store');
