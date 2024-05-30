@@ -16,6 +16,7 @@ return new class extends Migration
             $table->boolean('sent')->default(false);
             $table->boolean('authorized')->default(false);
             $table->string('status_details', 255);
+            $table->date('issuance_date');
             $table->string('access_key', 49);
             $table->text('content')->nullable();
             // Foreign Keys

@@ -23,6 +23,7 @@ class ClientFactory extends Factory
         return [
             'name' => fake()->name(),
             'identification' => $fakeIdentification,
+            'email' => fake()->email(),
             'user_id' => 1
         ];
     }

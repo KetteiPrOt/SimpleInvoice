@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255);
             $table->string('identification', 13);
+            $table->string('email', 255);
             // Foreign Keys
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id', 'client_user')

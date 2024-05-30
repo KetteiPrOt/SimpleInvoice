@@ -13,6 +13,7 @@ class Invoice extends Model
     protected $fillable = [
         'authorized',
         'status_details',
+        'issuance_date',
         'access_key',
         'content',
         'user_id',

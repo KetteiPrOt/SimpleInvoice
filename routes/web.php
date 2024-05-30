@@ -50,7 +50,7 @@ Route::middleware(['auth', 'can:users'])->controller(UserController::class)->gro
 });
 
 Route::get('/facturas', [InvoiceController::class, 'index'])->name('invoices.index');
-Route::get('/facturas/crear', CreateInvoiceController::class)->name('invoices.create');
+Route::get('/facturas/crear', [CreateInvoiceController::class, 'create'])->name('invoices.create');
 Route::post('/facturas', [CreateInvoiceController::class, 'store'])->name('invoices.store');
 Route::get('/facturas/{invoice}', [InvoiceController::class, 'show'])->name('invoices.show');
 Route::get('/facturas/{invoice}/documento', [InvoiceController::class, 'showDocument'])->name('invoices.show-document');

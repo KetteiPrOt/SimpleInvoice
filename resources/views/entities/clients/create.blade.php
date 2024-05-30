@@ -40,6 +40,19 @@
                             />
                         </div>
                         <div>
+                            <x-input-label for="emailInput">
+                                Email
+                            </x-input-label>
+                            <x-text-input
+                                minlength="3" maxlength="255" type="email"
+                                name="email" id="emailInput" required
+                                value="{{old('email')}}"
+                            />
+                            <x-input-error
+                                :messages="$errors->get('email')"
+                            />
+                        </div>
+                        <div>
                             <x-primary-button>
                                 Guardar
                             </x-primary-button>

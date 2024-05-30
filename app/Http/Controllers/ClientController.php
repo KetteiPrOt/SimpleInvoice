@@ -44,10 +44,12 @@ class ClientController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:2|max:255',
-            'identification' => ['required', 'string', 'size:13', 'regex:/^[0987654321]{13}$/']
+            'identification' => ['required', 'string', 'size:13', 'regex:/^[0987654321]{13}$/'],
+            'email' => 'required|string|email|lowercase|max:255'
         ], attributes: [
             'name' => 'nombre',
-            'identification' => 'identificación'
+            'identification' => 'identificación',
+            'email' => 'correo electrónico'
         ]);
         if($validator->fails()){
             return redirect()
@@ -59,6 +61,7 @@ class ClientController extends Controller
         $client = Client::create([
             'name' => $validated['name'],
             'identification' => $validated['identification'],
+            'email' => $validated['email'],
             'user_id' => Auth::user()->id
         ]);
         return redirect()->route('clients.show', $client->id);
@@ -85,10 +88,12 @@ class ClientController extends Controller
         $this->authorize($client);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:2|max:255',
-            'identification' => ['required', 'string', 'size:13', 'regex:/^[0987654321]{13}$/']
+            'identification' => ['required', 'string', 'size:13', 'regex:/^[0987654321]{13}$/'],
+            'email' => 'required|string|email|lowercase|max:255'
         ], attributes: [
             'name' => 'nombre',
-            'identification' => 'identificación'
+            'identification' => 'identificación',
+            'email' => 'correo electrónico'
         ]);
         if($validator->fails()){
             return redirect()
@@ -99,7 +104,8 @@ class ClientController extends Controller
         $validated = $validator->validated();
         $client->update([
             'name' => $validated['name'],
-            'identification' => $validated['identification']
+            'identification' => $validated['identification'],
+            'email' => $validated['email']
         ]);
         return redirect()->route('clients.show', $client->id);
     }

@@ -33,11 +33,24 @@
                             </x-input-label>
                             <x-text-input
                                 minlength="13" maxlength="13"
-                                name="identification" id="priceInput" required
+                                name="identification" id="identificationInput" required
                                 value="{{old('identification', $client->identification)}}"
                             />
                             <x-input-error
                                 :messages="$errors->get('identification')"
+                            />
+                        </div>
+                        <div>
+                            <x-input-label for="emailInput">
+                                Email
+                            </x-input-label>
+                            <x-text-input
+                                minlength="3" maxlength="255"
+                                name="email" id="emailInput" required
+                                value="{{old('email', $client->email)}}"
+                            />
+                            <x-input-error
+                                :messages="$errors->get('email')"
                             />
                         </div>
                         <div>

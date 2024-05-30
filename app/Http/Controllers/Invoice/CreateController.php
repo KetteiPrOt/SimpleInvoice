@@ -14,25 +14,15 @@ use SoapClient;
 
 class CreateController extends Controller
 {
-    private function invoicingInformationExist(): bool
+    public function create()
     {
-        $user = Auth::user();
-        return 
-            !is_null($user->identification)
-            && !is_null($user->commercial_name)
-            && !is_null($user->address)
-            && !is_null($user->certificate)
-            && !is_null($user->certificate_password);
-    }
-
-    public function __invoke()
-    {
-        if(!$this->invoicingInformationExist()){
+        if($this->invoicingInformationExist()){
+            return view('entities.invoices.create', [
+                'clients' => Client::all()
+            ]);
+        } else {
             return redirect(route('profile') . '#update-invoicing-information');
         }
-        return view('entities.invoices.create', [
-            'clients' => Client::all()
-        ]);
     }
 
     public function store(Request $request, Signer $signer)
@@ -66,12 +56,24 @@ class CreateController extends Controller
         Invoice::create([
             'authorized' => false,
             'status_details' => $status,
+            'issuance_date' => date('Y-m-d'),
             'access_key' => $invoice['access_key'],
             'content' => $signed_invoice,
             'user_id' => Auth::user()->id,
         ]);
 
         return redirect()->route('invoices.create');
+    }
+
+    private function invoicingInformationExist(): bool
+    {
+        $user = Auth::user();
+        return 
+            !is_null($user->identification)
+            && !is_null($user->commercial_name)
+            && !is_null($user->address)
+            && !is_null($user->certificate)
+            && !is_null($user->certificate_password);
     }
 
     private function sendInvoice(string $invoice)

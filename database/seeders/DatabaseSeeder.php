@@ -29,9 +29,12 @@ class DatabaseSeeder extends Seeder
         $role->givePermissionTo('users');
         $admin->assignRole('Administrador');
 
-        User::factory()->create([
+        $regularUser = User::factory()->create([
             'name' => 'PATRICIA ELIZABETH TRAVEZ MERO',
-            'email' => 'sd.kettei@gmail.com',
+            'email' => 'patricia@gmail.com',
+            'identification' => '1717355448001',
+            'commercial_name' => 'DEPOSITO EL LICENCIADO',
+            'address' => 'Jaramijo Barrio Santa Cruz, donde esta la Cruz'
         ]);
 
         // Product::factory(10)->create();
@@ -40,13 +43,14 @@ class DatabaseSeeder extends Seeder
         Product::create([
             'name' => 'Jhonnie Rojo',
             'price' => 10.00,
-            'user_id' => $admin->id
+            'user_id' => $regularUser->id
         ]);
 
         Client::create([
             'name' => 'PRUEBAS SERVICIO RENTAS INTERNAS',
             'identification' => '0000000000001',
-            'user_id' => $admin->id
+            'email' => 'sri@gob.ec',
+            'user_id' => $regularUser->id
         ]);
     }
 }

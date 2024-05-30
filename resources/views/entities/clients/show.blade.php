@@ -25,6 +25,13 @@
                     </p>
 
                     <h3 class="font-bold text-lg">
+                        Email
+                    </h3>
+                    <p class="mb-4">
+                        {{$client->email}}
+                    </p>
+
+                    <h3 class="font-bold text-lg">
                         Usuario
                     </h3>
                     <p class="mb-4">
